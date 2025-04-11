@@ -114,6 +114,8 @@ data:
     define( 'S3_UPLOADS_REGION', 'world' );
     define( 'S3_UPLOADS_KEY', 'mIk6JTY9INyZES4CXSsS' );
     define( 'S3_UPLOADS_SECRET', 'HuGo2BBUFY7I32csQcjClzsaccQKYYUcey2oRTxl' );
+
+    define( 'JETPACK_DEV_DEBUG', true );
 ---
 apiVersion: v1
 kind: ConfigMap
