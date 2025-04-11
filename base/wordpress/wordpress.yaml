@@ -106,6 +106,9 @@ data:
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
   WORDPRESS_CONFIG_EXTRA: |
+    define( 'JETPACK_DEV_DEBUG', true );
+    define( 'WP_ENVIRONMENT_TYPE', 'development' );
+    
     define( 'WP_AUTO_UPDATE_CORE', false );
     define( 'DISALLOW_FILE_EDIT', true );
     define( 'DISALLOW_FILE_MODS', true );
@@ -114,8 +117,6 @@ data:
     define( 'S3_UPLOADS_REGION', 'world' );
     define( 'S3_UPLOADS_KEY', 'mIk6JTY9INyZES4CXSsS' );
     define( 'S3_UPLOADS_SECRET', 'HuGo2BBUFY7I32csQcjClzsaccQKYYUcey2oRTxl' );
-
-    define( 'JETPACK_DEV_DEBUG', true );
 ---
 apiVersion: v1
 kind: ConfigMap
