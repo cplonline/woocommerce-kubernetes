@@ -108,7 +108,7 @@ data:
   WORDPRESS_CONFIG_EXTRA: |
     define( 'JETPACK_DEV_DEBUG', true );
     define( 'WP_ENVIRONMENT_TYPE', 'development' );
-    
+
     define( 'WP_AUTO_UPDATE_CORE', false );
     define( 'DISALLOW_FILE_EDIT', true );
     define( 'DISALLOW_FILE_MODS', true );
