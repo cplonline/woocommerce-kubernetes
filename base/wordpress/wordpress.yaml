@@ -102,7 +102,8 @@ kind: ConfigMap
 metadata:
   name: wordpress-env
 data:
-  WORDPRESS_DB_HOST: mariadb
+  #WORDPRESS_DB_HOST: mariadb
+  WORDPRESS_DB_HOST: wordpress-mariadb-primary
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
   WORDPRESS_CONFIG_EXTRA: |
