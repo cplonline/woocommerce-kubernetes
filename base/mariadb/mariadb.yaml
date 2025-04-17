@@ -89,7 +89,7 @@ spec:
     type: ClusterIP
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
-kind: MariaDB
+kind: Database
 metadata:
   name: wordpress
 spec:
