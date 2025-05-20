@@ -23,6 +23,8 @@ spec:
         envFrom:
         - secretRef:
             name: wordpress-secrets
+        - secretRef:
+            name: wordpress-media-secrets
         - configMapRef:
             name: wordpress-env
         resources:
@@ -103,23 +105,16 @@ data:
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
   WORDPRESS_CONFIG_EXTRA: |
-    // WP-Stateless
-    //define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
-    //define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
-    //define( 'WP_STATELESS_MEDIA_JSON_KEY, getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
+    define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
+    define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
+    define( 'WP_STATELESS_MEDIA_JSON_KEY, getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
 
     define( 'JETPACK_DEV_DEBUG', true );
     define( 'WP_ENVIRONMENT_TYPE', 'development' );
 
-
     define( 'WP_AUTO_UPDATE_CORE', false );
     define( 'DISALLOW_FILE_EDIT', true );
     define( 'DISALLOW_FILE_MODS', true );
-
-    define( 'S3_UPLOADS_BUCKET', 'wordpress' );
-    define( 'S3_UPLOADS_REGION', 'world' );
-    define( 'S3_UPLOADS_KEY', 'mIk6JTY9INyZES4CXSsS' );
-    define( 'S3_UPLOADS_SECRET', 'HuGo2BBUFY7I32csQcjClzsaccQKYYUcey2oRTxl' );
 ---
 apiVersion: v1
 kind: ConfigMap
