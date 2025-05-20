@@ -60,17 +60,6 @@ spec:
           name: wordpress-nginx
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: wordpress
-spec:
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
-    app: wordpress
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: www-data
@@ -146,24 +135,6 @@ data:
         fastcgi_pass 127.0.0.1:9000;
       }
     }
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: wordpress-ingress
-# spec:
-#   ingressClassName: nginx
-#   rules:
-#   - host: new.cplonline.com.au
-#     http:
-#       paths:
-#       - pathType: Prefix
-#         path: /
-#         backend:
-#           service:
-#             name: wordpress
-#             port: 
-#               number: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -183,3 +154,84 @@ spec:
       target:
         type: Utilization
         averageUtilization: 80
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: wordpress-ingress
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: new.cplonline.com.au
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /
+#         backend:
+#           service:
+#             name: wordpress
+#             port: 
+#               number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+    cloud.google.com/backend-config: '{"default": "wordpress-backend"}'
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: wordpress
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: wordpress-backend
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    healthyThreshold: 1
+    port: 80
+    requestPath: /
+    timeoutSec: 5
+    type: HTTP
+    unhealthyThreshold: 2
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: wordpress-frontend
+spec:
+  redirectToHttps:
+    enabled: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  labels:
+    name: wordpress-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: false
+    kubernetes.io/ingress.class: gce
+    networking.gke.io/v1beta1.FrontendConfig: wordpress-frontend
+    # kubernetes.io/ingress.global-static-ip-name: ''
+    # ingress.gcp.kubernetes.io/pre-shared-cert: ''
+spec:
+  tls:
+  - secretName: argocd/argocd-ingress-tls
+  rules:
+  - host: new.cplonline.com.au
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: wordpress
+            port: 
+              number: 80
