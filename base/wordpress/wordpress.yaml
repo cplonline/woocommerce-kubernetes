@@ -53,10 +53,12 @@ spec:
             memory: 128Mi
         readinessProbe:
           httpGet:
-            path: /
+            path: /index.php
             port: 80
-          initialDelaySeconds: 15
-          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /index.php
+            port: 80
 
       volumes:
       - name: www-data
