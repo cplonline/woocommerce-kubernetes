@@ -146,24 +146,24 @@ data:
         fastcgi_pass 127.0.0.1:9000;
       }
     }
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: wordpress-ingress
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: wordpress.test
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: wordpress
-            port: 
-              number: 80
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: wordpress-ingress
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: new.cplonline.com.au
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /
+#         backend:
+#           service:
+#             name: wordpress
+#             port: 
+#               number: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
