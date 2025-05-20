@@ -102,13 +102,18 @@ kind: ConfigMap
 metadata:
   name: wordpress-env
 data:
-  #WORDPRESS_DB_HOST: mariadb
-  WORDPRESS_DB_HOST: wordpress-mariadb-primary
+  WORDPRESS_DB_HOST: mariadb
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
   WORDPRESS_CONFIG_EXTRA: |
+    // WP-Stateless
+    //define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
+    //define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
+    //define( 'WP_STATELESS_MEDIA_JSON_KEY, getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
+
     define( 'JETPACK_DEV_DEBUG', true );
     define( 'WP_ENVIRONMENT_TYPE', 'development' );
+
 
     define( 'WP_AUTO_UPDATE_CORE', false );
     define( 'DISALLOW_FILE_EDIT', true );
@@ -133,11 +138,6 @@ data:
  
       location / {
         try_files $uri $uri/ /index.php?$args;
-      }
-
-      location /wp-content/uploads {
-        rewrite ^/wp-content/(.+) /wordpress/$1 break;
-        proxy_pass http://minio:9000;
       }
  
       location ~ \.php$ {
