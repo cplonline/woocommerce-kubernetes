@@ -108,7 +108,7 @@ data:
     define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
     //define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
     define( 'WP_STATELESS_MEDIA_BUCKET', 'cplonline-media' );
-    define( 'WP_STATELESS_MEDIA_JSON_KEY, getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
+    define( 'WP_STATELESS_MEDIA_JSON_KEY', getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
 
     define( 'JETPACK_DEV_DEBUG', true );
     define( 'WP_ENVIRONMENT_TYPE', 'development' );
