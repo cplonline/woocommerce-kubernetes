@@ -53,11 +53,11 @@ spec:
             memory: 128Mi
         readinessProbe:
           httpGet:
-            path: /index.php
+            path: /
             port: 80
         livenessProbe:
           httpGet:
-            path: /index.php
+            path: /
             port: 80
 
       volumes:
