@@ -216,14 +216,14 @@ metadata:
   labels:
     name: wordpress-ingress
   annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: 'default-certificate'
     kubernetes.io/ingress.allow-http: false
     kubernetes.io/ingress.class: gce
     networking.gke.io/v1beta1.FrontendConfig: wordpress-frontend
     # kubernetes.io/ingress.global-static-ip-name: ''
-    # ingress.gcp.kubernetes.io/pre-shared-cert: ''
 spec:
-  tls:
-  - secretName: argocd/argocd-ingress-tls
+  # tls:
+  # - secretName: argocd-ingress-tls
   rules:
   - host: new.cplonline.com.au
     http:
