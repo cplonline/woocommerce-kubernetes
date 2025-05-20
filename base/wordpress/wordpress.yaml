@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: wordpress
-        image: wordpress-test
+        image: australia-southeast2-docker.pkg.dev/cplonline/cplonline-repository/wordpress-test:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 9000
