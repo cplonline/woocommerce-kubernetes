@@ -57,10 +57,16 @@ spec:
           httpGet:
             path: /
             port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+          timeoutSeconds: 10
         livenessProbe:
           httpGet:
             path: /
             port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+          timeoutSeconds: 10
 
       volumes:
       - name: www-data
