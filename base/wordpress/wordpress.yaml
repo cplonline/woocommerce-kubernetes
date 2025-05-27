@@ -230,7 +230,6 @@ spec:
       httpHealthCheck:
         port: 80
         requestPath: /
-        response: 200
   targetRef:
     group: ""
     kind: Service
