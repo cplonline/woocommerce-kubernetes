@@ -187,9 +187,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-    cloud.google.com/backend-config: '{"ports": {"http":"wordpress-backend"}}'
+  # annotations:
+  #   cloud.google.com/neg: '{"ingress": true}'
+  #   cloud.google.com/backend-config: '{"ports": {"http":"wordpress-backend"}}'
 spec:
   ports:
   - port: 80
@@ -197,51 +197,90 @@ spec:
   selector:
     app: wordpress
 ---
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
-  name: wordpress-backend
+  name: wordpress
 spec:
-  healthCheck:
-    checkIntervalSec: 30
-    healthyThreshold: 1
-    port: 80
-    requestPath: /
-    timeoutSec: 5
-    type: HTTP
-    unhealthyThreshold: 2
----
-apiVersion: networking.gke.io/v1beta1
-kind: FrontendConfig
-metadata:
-  name: wordpress-frontend
-spec:
-  redirectToHttps:
-    enabled: true
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: wordpress-ingress
-  labels:
-    name: wordpress-ingress
-  annotations:
-    ingress.gcp.kubernetes.io/pre-shared-cert: 'default-certificate'
-    kubernetes.io/ingress.allow-http: false
-    kubernetes.io/ingress.class: gce
-    networking.gke.io/v1beta1.FrontendConfig: wordpress-frontend
-    # kubernetes.io/ingress.global-static-ip-name: ''
-spec:
-  # tls:
-  # - secretName: argocd-ingress-tls
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+  hostnames:
+  - "new.cplonline.com.au"
   rules:
-  - host: new.cplonline.com.au
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: wordpress
-            port: 
-              number: 80
+  - matches:
+    - path:
+        value: /
+    backendRefs:
+    - name: wordpress
+      port: 80
+---
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: wordpress-healthcheck
+spec:
+  default:
+    checkIntervalSec: 30
+    timeoutSec: 5
+    healthyThreshold: 1
+    unhealthyThreshold: 2
+    config:
+      type: http
+      httpHealthCheck:
+        port: 80
+        requestPath: /
+        response: 200
+  targetRef:
+    group: ""
+    kind: Service
+    name: wordpress
+# ---
+# apiVersion: cloud.google.com/v1
+# kind: BackendConfig
+# metadata:
+#   name: wordpress-backend
+# spec:
+#   healthCheck:
+#     checkIntervalSec: 30
+#     healthyThreshold: 1
+#     port: 80
+#     requestPath: /
+#     timeoutSec: 5
+#     type: HTTP
+#     unhealthyThreshold: 2
+# ---
+# apiVersion: networking.gke.io/v1beta1
+# kind: FrontendConfig
+# metadata:
+#   name: wordpress-frontend
+# spec:
+#   redirectToHttps:
+#     enabled: true
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: wordpress-ingress
+#   labels:
+#     name: wordpress-ingress
+#   annotations:
+#     ingress.gcp.kubernetes.io/pre-shared-cert: 'default-certificate'
+#     kubernetes.io/ingress.allow-http: false
+#     kubernetes.io/ingress.class: gce
+#     networking.gke.io/v1beta1.FrontendConfig: wordpress-frontend
+#     # kubernetes.io/ingress.global-static-ip-name: ''
+# spec:
+#   # tls:
+#   # - secretName: argocd-ingress-tls
+#   rules:
+#   - host: new.cplonline.com.au
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /
+#         backend:
+#           service:
+#             name: wordpress
+#             port: 
+#               number: 80
