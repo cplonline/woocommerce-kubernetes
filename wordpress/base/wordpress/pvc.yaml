@@ -4,7 +4,7 @@ metadata:
   name: www-data
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   storageClassName: standard
   resources:
     requests:

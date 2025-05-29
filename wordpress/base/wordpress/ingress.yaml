@@ -4,14 +4,14 @@ metadata:
   name: wordpress
 spec:
   parentRefs:
-  - kind: Gateway
-    name: external-http
+    - kind: Gateway
+      name: external-http
   hostnames:
-  - "wordpress.test"
+    - "wordpress.test"
   rules:
-  - backendRefs:
-    - name: wordpress
-      port: 80
+    - backendRefs:
+        - name: wordpress
+          port: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: HealthCheckPolicy
