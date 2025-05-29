@@ -1,13 +1,3 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mariadb-secrets
-  labels: 
-    k8s.mariadb.com/watch: ''
-stringData:
-  MARIADB_PASSWORD: secret
-  MARIADB_ROOT_PASSWORD: verysecret
----
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: MariaDB
 metadata:
@@ -19,35 +9,3 @@ spec:
   storage:
     size: 1Gi
     storageClassName: standard
----
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: Database
-metadata:
-  name: wordpress
-spec:
-  mariaDbRef:
-    name: wordpress-mariadb
----
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: User
-metadata:
-  name: wordpress
-spec:
-  mariaDbRef:
-    name: wordpress-mariadb
-  passwordSecretKeyRef:
-    name: mariadb-secrets
-    key: MARIADB_PASSWORD
-  maxUserConnections: 0
----
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: Grant
-metadata:
-  name: wordpress
-spec:
-  mariaDbRef:
-    name: wordpress-mariadb
-  privileges:
-  - ALL PRIVILEGES
-  database: wordpress
-  username: wordpress

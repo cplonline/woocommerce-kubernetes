@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wordpress-env
+data:
+  WORDPRESS_DB_HOST: wordpress-mariadb
+  WORDPRESS_DB_USER: wordpress
+  WORDPRESS_DB_NAME: wordpress
+  WORDPRESS_CONFIG_EXTRA: |
+    define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
+    //define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
+    define( 'WP_STATELESS_MEDIA_BUCKET', 'cplonline-media' );
+    define( 'WP_STATELESS_MEDIA_JSON_KEY', getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
+
+    define( 'WP_REDIS_HOST', 'redis' );
+
+    define( 'JETPACK_DEV_DEBUG', true );
+    define( 'WP_ENVIRONMENT_TYPE', 'development' );
+
+    define( 'WP_AUTO_UPDATE_CORE', false );
+    define( 'DISALLOW_FILE_EDIT', true );
+    define( 'DISALLOW_FILE_MODS', true );
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wordpress-nginx
+data:
+  wordpress.conf: |
+    server {
+      listen 80 default_server;
+      server_name _;
+      root /var/www/html;
+      index index.php index.html;
+ 
+      location / {
+        try_files $uri $uri/ /index.php?$args;
+      }
+ 
+      location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass 127.0.0.1:9000;
+      }
+    }

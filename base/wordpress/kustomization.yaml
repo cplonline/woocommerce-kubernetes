@@ -3,4 +3,10 @@ kind: Kustomization
 metadata:
   name: wordpress
 resources:
-- wordpress.yaml
+- configmap.yaml
+- deployment.yaml
+- hpa.yaml
+- ingress.yaml
+- pvc.yaml
+- secret.yaml
+- service.yaml
