@@ -3,4 +3,7 @@ kind: Kustomization
 metadata:
   name: minio
 resources:
-- minio.yaml
+  - pvc.yaml
+  - secret.yaml
+  - service.yaml
+  - statefulset.yaml

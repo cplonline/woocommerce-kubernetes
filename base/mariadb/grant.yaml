@@ -6,6 +6,6 @@ spec:
   mariaDbRef:
     name: wordpress-mariadb
   privileges:
-  - ALL PRIVILEGES
+    - ALL PRIVILEGES
   database: wordpress
   username: wordpress
