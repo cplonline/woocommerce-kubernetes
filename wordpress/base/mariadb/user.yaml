@@ -6,6 +6,6 @@ spec:
   mariaDbRef:
     name: wordpress-mariadb
   passwordSecretKeyRef:
-    name: mariadb-secrets
+    name: mariadb-secret
     key:  password
   maxUserConnections: 0
