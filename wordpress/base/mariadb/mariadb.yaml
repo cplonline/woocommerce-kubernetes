@@ -5,7 +5,8 @@ metadata:
 spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secrets
-    key: MARIADB_ROOT_PASSWORD
+    key: root-password
+    generate: true
   storage:
     size: 1Gi
     storageClassName: standard

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/cplonline/woocommerce-kubernetes.git"
+    targetRevision: "HEAD"
+    path: "wordpress/overlays/prod"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
