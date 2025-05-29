@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../base/mariadb
-  - ../base/redis
-  - ../base/wordpress
+  - ../../base/mariadb
+  - ../../base/redis
+  - ../../base/wordpress
 patches:
   - path: patches/ingress.yaml
     target:
