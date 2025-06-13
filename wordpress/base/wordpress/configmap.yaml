@@ -7,7 +7,7 @@ data:
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
   WORDPRESS_CONFIG_EXTRA: |
-    define( 'WP_STATELESS_MEDIA_MODE', 'stateless' );
+    define( 'WP_STATELESS_MEDIA_MODE', 'cdn' );
     //define( 'WP_STATELESS_MEDIA_BUCKET', getenv_docker('WORDPRESS_MEDIA_BUCKET', '') );
     define( 'WP_STATELESS_MEDIA_BUCKET', 'cplonline-media' );
     define( 'WP_STATELESS_MEDIA_JSON_KEY', getenv_docker('WORDPRESS_MEDIA_JSON_KEY', '') );
